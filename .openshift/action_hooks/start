@@ -1,0 +1,14 @@
+#!/bin/bash
+# The logic to start up your application should be put in this
+# script. The application will work only if it binds to
+# $OPENSHIFT_INTERNAL_IP:8080
+
+export JMXDISABLE=yes
+export JVMFLAGS="-Dzookeeper.serverCnxnFactory=org.apache.zookeeper.server.NettyServerCnxnFactory"
+cd $OPENSHIFT_GEAR_DIR/repo/zookeeper-3.4.3
+cd conf
+cp zoo-template.cfg zoo.cfg
+echo clientPortAddress=$OPENSHIFT_INTERNAL_IP >> zoo.cfg
+cat zoo.cfg
+cd ..
+nohup sh bin/zkServer.sh start
